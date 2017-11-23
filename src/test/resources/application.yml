@@ -1,0 +1,13 @@
+dropwizard:
+  metrics:
+    expose-proxy: false
+    proxy-target-class: false    
+    metrics:
+      jvm.gc : com.codahale.metrics.jvm.GarbageCollectorMetricSet
+      jvm.memory : com.codahale.metrics.jvm.MemoryUsageGaugeSet
+      jvm.thread-states : com.codahale.metrics.jvm.ThreadStatesGaugeSet
+      jvm.fd.usage : com.codahale.metrics.jvm.FileDescriptorRatioGauge
+    report:
+      types: console
+      
+      
