@@ -20,6 +20,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import com.codahale.metrics.spring.boot.property.ConsoleReporterProperties;
 import com.codahale.metrics.spring.boot.property.CsvReporterProperties;
+import com.codahale.metrics.spring.boot.property.DatabaseReporterProperties;
 import com.codahale.metrics.spring.boot.property.DatadogReporterProperties;
 import com.codahale.metrics.spring.boot.property.GangliaReporterProperties;
 import com.codahale.metrics.spring.boot.property.GraphiteReporterProperties;
@@ -54,6 +55,8 @@ public class MetricsReportProperties {
 	private ConsoleReporterProperties console;
 	@NestedConfigurationProperty
 	private CsvReporterProperties csv;
+	@NestedConfigurationProperty
+	private DatabaseReporterProperties database;
 	@NestedConfigurationProperty
 	private DatadogReporterProperties datadog;
 	@NestedConfigurationProperty
@@ -99,6 +102,14 @@ public class MetricsReportProperties {
 
 	public void setCsv(CsvReporterProperties csv) {
 		this.csv = csv;
+	}
+
+	public DatabaseReporterProperties getDatabase() {
+		return database;
+	}
+
+	public void setDatabase(DatabaseReporterProperties database) {
+		this.database = database;
 	}
 
 	public DatadogReporterProperties getDatadog() {

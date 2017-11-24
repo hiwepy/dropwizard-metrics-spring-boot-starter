@@ -25,8 +25,8 @@ import com.codahale.metrics.Gauge;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.spring.boot.event.GaugeEvent;
 import com.codahale.metrics.spring.boot.event.MetricEventPoint;
+import com.codahale.metrics.spring.boot.ext.MetricsFactory;
 import com.codahale.metrics.spring.boot.ext.filter.NamedFilter;
-import com.codahale.metrics.spring.boot.factory.MetricsFactory;
 
 public class GaugeEventListener extends MetricEventListener<GaugeEvent> {
 

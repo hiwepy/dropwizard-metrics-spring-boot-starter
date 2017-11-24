@@ -17,55 +17,69 @@ package com.codahale.metrics.spring.boot.property;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotEmpty;
-import org.hibernate.validator.constraints.Range;
-
+import com.codahale.metrics.spring.boot.MetricsReportProperties;
+import com.codahale.metrics.spring.boot.factory.support.SenderType;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.izettle.metrics.dw.SenderType;
-
-import io.dropwizard.util.Duration;
 
 public class InfluxdbReporterProperties extends ReporterProperties  {
+	
+	public static final String PREFIX = MetricsReportProperties.PREFIX + ".influxdb";
+	
+	public enum Protocol {
 
-	@NotEmpty
-	private String protocol = "http";
+		HTTP("http"), HTTPS("https");
+		
+		private final String protocol;
 
-	@NotEmpty
+		Protocol(String protocol) {
+			this.protocol = protocol;
+		}
+
+		public String get() {
+			return protocol;
+		}
+		
+		public boolean equals(Protocol protocol){
+			return this.compareTo(protocol) == 0;
+		}
+		
+		public boolean equals(String protocol){
+			return this.compareTo(Protocol.valueOfIgnoreCase(protocol)) == 0;
+		}
+		
+		public static Protocol valueOfIgnoreCase(String key) {
+			for (Protocol protocol : Protocol.values()) {
+				if(protocol.get().equalsIgnoreCase(key)) {
+					return protocol;
+				}
+			}
+	    	throw new NoSuchElementException("Cannot found transport with key '" + key + "'.");
+	    }
+		
+	}
+	
+	private Protocol protocol = Protocol.HTTP;
+
 	private String host = "localhost";
 
-	@Range(min = 0, max = 49151)
 	private int port = 8086;
 
-	@NotNull
-	private String prefix = "";
-
-	@NotNull
 	private Map<String, String> tags = new HashMap<>();
 
-	@NotEmpty
 	private ImmutableMap<String, ImmutableSet<String>> fields = ImmutableMap.of("timers",
 			ImmutableSet.of("p50", "p75", "p95", "p99", "p999", "m1_rate"), "meters", ImmutableSet.of("m1_rate"));
 
-	@NotNull
 	private String database = "";
 
-	@NotNull
 	private String auth = "";
 
-	@Range(min = 500, max = 30000)
 	private int connectTimeout = 1500;
 
-	@Range(min = 500, max = 30000)
 	private int readTimeout = 1500;
 
-	@NotNull
-	private Duration precision = Duration.minutes(1);
-
-	@NotNull
 	private SenderType senderType = SenderType.HTTP;
 
 	private boolean groupGauges = true;
@@ -100,11 +114,11 @@ public class InfluxdbReporterProperties extends ReporterProperties  {
 			.add("jvm.memory.pools.Metaspace.usage").add("jvm.memory.pools.PS-Eden-Space.usage")
 			.add("jvm.memory.pools.PS-Old-Gen.usage").add("jvm.memory.pools.PS-Survivor-Space.usage").build();
 
-	public String getProtocol() {
+	public Protocol getProtocol() {
 		return protocol;
 	}
 
-	public void setProtocol(String protocol) {
+	public void setProtocol(Protocol protocol) {
 		this.protocol = protocol;
 	}
 
@@ -122,14 +136,6 @@ public class InfluxdbReporterProperties extends ReporterProperties  {
 
 	public void setPort(int port) {
 		this.port = port;
-	}
-
-	public String getPrefix() {
-		return prefix;
-	}
-
-	public void setPrefix(String prefix) {
-		this.prefix = prefix;
 	}
 
 	public Map<String, String> getTags() {
@@ -186,14 +192,6 @@ public class InfluxdbReporterProperties extends ReporterProperties  {
 
 	public void setGroupGauges(boolean groupGauges) {
 		this.groupGauges = groupGauges;
-	}
-
-	public Duration getPrecision() {
-		return precision;
-	}
-
-	public void setPrecision(Duration precision) {
-		this.precision = precision;
 	}
 
 	public Map<String, String> getMeasurementMappings() {

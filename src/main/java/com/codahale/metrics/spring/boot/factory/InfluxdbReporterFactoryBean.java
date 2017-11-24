@@ -28,8 +28,6 @@ import com.izettle.metrics.influxdb.InfluxDbReporter;
 import com.izettle.metrics.influxdb.InfluxDbTcpSender;
 import com.izettle.metrics.influxdb.InfluxDbUdpSender;
 
-import io.dropwizard.validation.ValidationMethod;
-
 
 /**
  * A factory for {@link InfluxDbReporter} instances.
@@ -166,16 +164,17 @@ public class InfluxdbReporterFactoryBean
 				.measurementMappings(buildMeasurementMappings());
 
 		try {
+			
 			switch (properties.getSenderType()) {
 				case HTTP:
 					return reporter.build(
 							new InfluxDbHttpSender(
-									properties.getProtocol(), 
+									properties.getProtocol().get(), 
 									properties.getHost(), 
 									properties.getPort(),
 									properties.getDatabase(), 
 									properties.getAuth(), 
-									properties.getPrecision().getUnit(),
+									properties.getDurationUnit(),
 									properties.getConnectTimeout(), 
 									properties.getReadTimeout(), 
 									properties.getPrefix()));
@@ -220,7 +219,6 @@ public class InfluxdbReporterFactoryBean
 		return mappings;
 	}
 
-	@ValidationMethod(message = "measurementMappings must be regular expressions")
 	public boolean isMeasurementMappingRegularExpressions() {
 		for (Map.Entry<String, String> entry : buildMeasurementMappings().entrySet()) {
 			try {

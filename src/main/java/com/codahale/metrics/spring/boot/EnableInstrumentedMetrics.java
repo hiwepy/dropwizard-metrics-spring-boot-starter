@@ -24,13 +24,13 @@ import java.lang.annotation.Target;
 
 import org.springframework.context.annotation.Import;
 
-import com.codahale.metrics.spring.boot.factory.support.MetricsAnnotationDrivenRegistrar;
+import com.codahale.metrics.spring.boot.factory.support.MetricsServletRegistrar;
 
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@Import({ MetricsAnnotationDrivenRegistrar.class })
+@Import({ MetricsServletRegistrar.class })
 public @interface EnableInstrumentedMetrics {
 	
 }

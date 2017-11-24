@@ -15,8 +15,12 @@
  */
 package com.codahale.metrics.spring.boot.property;
 
+import com.codahale.metrics.spring.boot.MetricsReportProperties;
+
 public class JmxReporterProperties extends ReporterProperties  {
 
+	public static final String PREFIX = MetricsReportProperties.PREFIX + ".jmx";
+	
 	// Optional
 	private String domain;
 

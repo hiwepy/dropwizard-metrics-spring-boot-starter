@@ -15,8 +15,6 @@
  */
 package com.codahale.metrics.spring.boot.factory.support;
 
-import com.ryantenney.metrics.spring.reporter.MetricPrefixSupplier;
-
 public class BasicMetricPrefixSupplier implements MetricPrefixSupplier {
 
 	private final String prefix;

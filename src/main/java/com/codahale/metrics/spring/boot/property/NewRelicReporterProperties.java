@@ -15,8 +15,11 @@
  */
 package com.codahale.metrics.spring.boot.property;
 
+import com.codahale.metrics.spring.boot.MetricsReportProperties;
+
 public class NewRelicReporterProperties extends ReporterProperties  {
    
+	public static final String PREFIX = MetricsReportProperties.PREFIX + ".newrelic";
 	private String name = "NewRelic reporter";
 
 	public String getName() {

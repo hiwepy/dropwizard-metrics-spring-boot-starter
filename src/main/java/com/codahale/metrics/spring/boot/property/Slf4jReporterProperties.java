@@ -15,8 +15,12 @@
  */
 package com.codahale.metrics.spring.boot.property;
 
+import com.codahale.metrics.spring.boot.MetricsReportProperties;
+
 public class Slf4jReporterProperties extends ReporterProperties  {
 
+	public static final String PREFIX = MetricsReportProperties.PREFIX + ".slf4j";
+	
 	// Optional
 	private String marker;
 	private String logger;

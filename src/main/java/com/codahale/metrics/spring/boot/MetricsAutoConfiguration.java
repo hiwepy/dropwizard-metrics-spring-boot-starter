@@ -15,18 +15,23 @@
  */
 package com.codahale.metrics.spring.boot;
 
+import java.util.Iterator;
+import java.util.Map.Entry;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
+import org.springframework.beans.factory.support.BeanDefinitionReaderUtils;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.util.StringUtils;
 
 import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.spring.boot.factory.MetricsFactory;
-import com.codahale.metrics.spring.boot.factory.support.MetricBeansRegistrarConfiguration;
-import com.codahale.metrics.spring.boot.factory.support.MetricsAnnotationDrivenRegistrar;
+import com.codahale.metrics.MetricSet;
+import com.codahale.metrics.spring.boot.ext.MetricsFactory;
 
 /**
  * 
@@ -37,25 +42,48 @@ import com.codahale.metrics.spring.boot.factory.support.MetricsAnnotationDrivenR
  * @version 	V1.0
  */
 @Configuration
-@ConditionalOnProperty(prefix = MetricsProperties.PREFIX, value = "enabled", havingValue = "true")
+@ConditionalOnClass(MetricRegistry.class)
 @EnableConfigurationProperties(MetricsProperties.class)
-@Import({ MetricsAnnotationDrivenRegistrar.class, MetricBeansRegistrarConfiguration.class })
 public class MetricsAutoConfiguration implements DisposableBean {
 
 	//private Logger logger = LoggerFactory.getLogger(MetricsAutoConfiguration.class);
 
 	@Bean
 	@ConditionalOnMissingBean
-	public MetricRegistry metricRegistry() {
-		return new MetricRegistry();
+	public MetricRegistry metricRegistry(MetricsProperties properties) {
+		MetricRegistry metricRegistry = new MetricRegistry();
+		
+		Iterator<Entry<String, String>>  ite = properties.getMetrics().entrySet().iterator();
+		while (ite.hasNext()) {
+			
+			Entry<String, String> entry = ite.next();
+			final String name = entry.getKey();
+			try {
+				
+				AbstractBeanDefinition metricDef = BeanDefinitionReaderUtils.createBeanDefinition(MetricSet.class.getName(), entry.getValue(), this.getClass().getClassLoader());
+				
+				Object metric = BeanUtils.instantiateClass(metricDef.getBeanClass());
+				
+				if (StringUtils.hasText(name) && (metric instanceof MetricSet)) {
+					metricRegistry.register(name, (MetricSet) metric);
+				}
+				
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
+		return metricRegistry;
 	}
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public MetricsFactory metricsFactory(MetricRegistry registry) {
+	public MetricsFactory metricsFactory(MetricRegistry metricRegistry) {
 		MetricsFactory metricsFactory = new MetricsFactory();
-		if(registry != null) {
-			metricsFactory.setRegistry(registry);
+		if(metricRegistry != null) {
+			metricsFactory.setRegistry(metricRegistry);
 		}
 		return metricsFactory;
 	}

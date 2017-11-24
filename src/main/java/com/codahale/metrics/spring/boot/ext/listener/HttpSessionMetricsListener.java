@@ -4,7 +4,7 @@ import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
 import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.spring.boot.factory.MetricsFactory;
+import com.codahale.metrics.spring.boot.ext.MetricsFactory;
 
 /**
  * 

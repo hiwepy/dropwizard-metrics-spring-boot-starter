@@ -15,8 +15,11 @@
  */
 package com.codahale.metrics.spring.boot.property;
 
+import com.codahale.metrics.spring.boot.MetricsReportProperties;
+
 public class KafkaReporterProperties extends ReporterProperties {
 
+	public static final String PREFIX = MetricsReportProperties.PREFIX + ".kafka";
 	private String name = "kafka-reporter";
 	private boolean showSamples;
 	private String hostName;

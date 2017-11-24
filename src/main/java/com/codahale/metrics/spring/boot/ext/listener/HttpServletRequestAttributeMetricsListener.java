@@ -4,7 +4,7 @@ import javax.servlet.ServletRequestAttributeEvent;
 import javax.servlet.ServletRequestAttributeListener;
 
 import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.spring.boot.factory.MetricsFactory;
+import com.codahale.metrics.spring.boot.ext.MetricsFactory;
 
 
 public class HttpServletRequestAttributeMetricsListener implements ServletRequestAttributeListener {

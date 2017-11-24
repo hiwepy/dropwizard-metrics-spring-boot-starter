@@ -4,7 +4,7 @@ import javax.servlet.ServletContextAttributeEvent;
 import javax.servlet.ServletContextAttributeListener;
 
 import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.spring.boot.factory.MetricsFactory;
+import com.codahale.metrics.spring.boot.ext.MetricsFactory;
 
 /**
  * 

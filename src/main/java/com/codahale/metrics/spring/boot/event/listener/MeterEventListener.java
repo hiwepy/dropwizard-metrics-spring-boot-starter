@@ -20,7 +20,7 @@ import org.springframework.scheduling.annotation.Async;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.spring.boot.event.MeterEvent;
 import com.codahale.metrics.spring.boot.event.MetricEventPoint;
-import com.codahale.metrics.spring.boot.factory.MetricsFactory;
+import com.codahale.metrics.spring.boot.ext.MetricsFactory;
 
 public class MeterEventListener extends MetricEventListener<MeterEvent> {
 

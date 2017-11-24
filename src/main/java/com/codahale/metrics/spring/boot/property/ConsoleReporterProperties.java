@@ -17,10 +17,12 @@ package com.codahale.metrics.spring.boot.property;
 
 import java.io.PrintStream;
 
-import javax.validation.constraints.NotNull;
+import com.codahale.metrics.spring.boot.MetricsReportProperties;
 
 public class ConsoleReporterProperties extends ReporterProperties {
 
+	public static final String PREFIX = MetricsReportProperties.PREFIX + ".console";
+	
 	public enum ConsoleStream {
 		STDOUT(System.out), STDERR(System.err);
 
@@ -35,10 +37,8 @@ public class ConsoleReporterProperties extends ReporterProperties {
 		}
 	}
 	
-	@NotNull
 	private String timeZone = "UTC";
 
-	@NotNull
 	private ConsoleStream output = ConsoleStream.STDOUT;
 
 	public String getTimeZone() {

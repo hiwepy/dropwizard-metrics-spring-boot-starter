@@ -1,6 +1,5 @@
 /*
-
-* Copyright (c) 2010-2020, vindell (https://github.com/vindell).
+ * Copyright (c) 2010-2020, vindell (https://github.com/vindell).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -25,13 +24,13 @@ import java.lang.annotation.Target;
 
 import org.springframework.context.annotation.Import;
 
-import com.codahale.metrics.spring.boot.factory.support.MetricsEventListenerRegistrar;
+import com.codahale.metrics.spring.boot.factory.support.MetricsServletRegistrar;
 
 @Target({ ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@Import({ MetricsEventListenerRegistrar.class })
-public @interface EnableMetrics {
+@Import({ MetricsServletRegistrar.class })
+public @interface EnableServletMetrics {
 	
 }

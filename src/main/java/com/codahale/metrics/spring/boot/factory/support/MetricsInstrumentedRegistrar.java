@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.codahale.metrics.spring.boot.factory.config;
+package com.codahale.metrics.spring.boot.factory.support;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,15 +21,10 @@ import java.util.Map;
 import javax.servlet.ServletContextAttributeListener;
 import javax.servlet.ServletRequestAttributeListener;
 import javax.servlet.ServletRequestListener;
-import javax.servlet.http.HttpSessionActivationListener;
 import javax.servlet.http.HttpSessionAttributeListener;
-import javax.servlet.http.HttpSessionBindingListener;
 import javax.servlet.http.HttpSessionListener;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -44,14 +39,12 @@ import com.codahale.metrics.spring.boot.EnableInstrumentedMetrics;
 import com.codahale.metrics.spring.boot.ext.listener.HttpServletContextAttributeMetricsListener;
 import com.codahale.metrics.spring.boot.ext.listener.HttpServletRequestAttributeMetricsListener;
 import com.codahale.metrics.spring.boot.ext.listener.HttpServletRequestMetricsListener;
-import com.codahale.metrics.spring.boot.ext.listener.HttpSessionActivationMetricsListener;
 import com.codahale.metrics.spring.boot.ext.listener.HttpSessionAttributeMetricsListener;
-import com.codahale.metrics.spring.boot.ext.listener.HttpSessionBindingMetricsListener;
 import com.codahale.metrics.spring.boot.ext.listener.HttpSessionMetricsListener;
 
 @Configuration
 @ConditionalOnClass({ EnableInstrumentedMetrics.class })
-public class MetricsInstrumentedConfiguration {
+public class MetricsInstrumentedRegistrar {
 
 	/**
 	 * 
@@ -61,9 +54,8 @@ public class MetricsInstrumentedConfiguration {
 	 * @param registry
 	 * @return
 	 */
-	@Bean
-	@ConditionalOnMissingBean
-	public ServletContextAttributeExporter servletContextAttributeExporter(MetricRegistry registry) {
+	@Bean("filterAttributeExporter")
+	public ServletContextAttributeExporter filterAttributeExporter(MetricRegistry registry) {
 		
 		ServletContextAttributeExporter attributeExporter = new ServletContextAttributeExporter();
 		
@@ -108,21 +100,9 @@ public class MetricsInstrumentedConfiguration {
 	}
 	
 	@Bean
-	public ServletListenerRegistrationBean<HttpSessionActivationListener> httpSessionActivationMetricsListener() {
-		HttpSessionActivationMetricsListener linstener = new HttpSessionActivationMetricsListener();
-		return new ServletListenerRegistrationBean<HttpSessionActivationListener>(linstener);
-	}
-	
-	@Bean
 	public ServletListenerRegistrationBean<HttpSessionAttributeListener> httpSessionAttributeMetricsListener() {
 		HttpSessionAttributeMetricsListener linstener = new HttpSessionAttributeMetricsListener();
 		return new ServletListenerRegistrationBean<HttpSessionAttributeListener>(linstener);
-	}
-	
-	@Bean
-	public ServletListenerRegistrationBean<HttpSessionBindingListener> httpSessionBindingMetricsListener() {
-		HttpSessionBindingMetricsListener linstener = new HttpSessionBindingMetricsListener();
-		return new ServletListenerRegistrationBean<HttpSessionBindingListener>(linstener);
 	}
 	
 	@Bean

@@ -16,8 +16,8 @@ import com.codahale.metrics.MetricFilter;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.spring.boot.ext.filter.FilterType;
 import com.codahale.metrics.spring.boot.ext.filter.PatternFilter;
+import com.codahale.metrics.spring.boot.factory.support.MetricPrefixSupplier;
 import com.codahale.metrics.spring.boot.property.ReporterProperties;
-import com.ryantenney.metrics.spring.reporter.MetricPrefixSupplier;
 
 public abstract class AbstractReporterFactoryBean<T,P extends ReporterProperties> implements FactoryBean<T>, InitializingBean, BeanFactoryAware {
 

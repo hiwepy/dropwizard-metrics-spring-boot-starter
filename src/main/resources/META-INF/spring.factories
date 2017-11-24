@@ -1,4 +1,4 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.codahale.metrics.spring.boot.MetricsAutoConfiguration=\
+com.codahale.metrics.spring.boot.MetricsAutoConfiguration,\
 com.codahale.metrics.spring.boot.MetricsReportAutoConfiguration

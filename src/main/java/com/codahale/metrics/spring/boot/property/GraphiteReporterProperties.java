@@ -17,8 +17,12 @@ package com.codahale.metrics.spring.boot.property;
 
 import java.util.NoSuchElementException;
 
+import com.codahale.metrics.spring.boot.MetricsReportProperties;
+
 public class GraphiteReporterProperties extends ReporterProperties {
 
+	public static final String PREFIX = MetricsReportProperties.PREFIX + ".graphite";
+	
 	public enum Transport {
 
 		RABBITMQ("rabbitmq"), TCP("tcp"), UDP("udp"), PICKLE("pickle");

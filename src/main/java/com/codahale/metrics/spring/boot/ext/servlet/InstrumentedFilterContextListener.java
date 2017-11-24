@@ -17,7 +17,7 @@ package com.codahale.metrics.spring.boot.ext.servlet;
 
 
 import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.spring.boot.factory.MetricsFactory;
+import com.codahale.metrics.spring.boot.ext.MetricsFactory;
 
 public class InstrumentedFilterContextListener extends com.codahale.metrics.servlet.InstrumentedFilterContextListener {
 	

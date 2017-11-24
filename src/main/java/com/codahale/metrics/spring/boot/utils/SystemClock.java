@@ -53,7 +53,7 @@ public class SystemClock extends Clock {
         public static final SystemClock INSTANCE = new SystemClock(1);
     }
 
-    private static SystemClock instance() {
+    public static SystemClock instance() {
         return InstanceHolder.INSTANCE;
     }
 

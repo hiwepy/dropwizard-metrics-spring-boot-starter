@@ -15,10 +15,14 @@
  */
 package com.codahale.metrics.spring.boot.property;
 
+import com.codahale.metrics.spring.boot.MetricsReportProperties;
+
 import info.ganglia.gmetric4j.gmetric.GMetric.UDPAddressingMode;
 
 public class GangliaReporterProperties extends ReporterProperties {
 
+	public static final String PREFIX = MetricsReportProperties.PREFIX + ".ganglia";
+	
 	// Required
 	private String group = "group";
 	private String port = "port";

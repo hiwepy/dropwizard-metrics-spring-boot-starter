@@ -22,21 +22,29 @@ import com.codahale.metrics.spring.boot.ext.filter.FilterType;
 
 public abstract class ReporterProperties {
 
+	protected Boolean enabled = false;
+	
 	// Required
-	private String period = "1m";
+	private String period = "10s";
 	
 	// Optional
+
+	private String prefix = "";
 	private TimeUnit durationUnit = TimeUnit.MILLISECONDS;
 	private TimeUnit rateUnit = TimeUnit.SECONDS;
 	private String locale = Locale.SIMPLIFIED_CHINESE.toString();
-	private String clockRef;
 	
 	private FilterType filterType = FilterType.PATTERN;
 	private String filterValue = null;
 	
-	private String prefix = "";
-	
-	
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+
 	public String getPeriod() {
 		return period;
 	}
@@ -67,14 +75,6 @@ public abstract class ReporterProperties {
 
 	public void setLocale(String locale) {
 		this.locale = locale;
-	}
-
-	public String getClockRef() {
-		return clockRef;
-	}
-
-	public void setClockRef(String clockRef) {
-		this.clockRef = clockRef;
 	}
 
 	public FilterType getFilterType() {

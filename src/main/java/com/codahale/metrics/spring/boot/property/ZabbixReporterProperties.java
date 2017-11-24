@@ -15,8 +15,11 @@
  */
 package com.codahale.metrics.spring.boot.property;
 
+import com.codahale.metrics.spring.boot.MetricsReportProperties;
+
 public class ZabbixReporterProperties extends ReporterProperties {
 
+	public static final String PREFIX = MetricsReportProperties.PREFIX + ".zabbix";
 	private String name = "zabbix-reporter";
 	private String hostName;
 	private String suffix = "";

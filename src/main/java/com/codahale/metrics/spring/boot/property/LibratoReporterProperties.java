@@ -18,8 +18,11 @@ package com.codahale.metrics.spring.boot.property;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.codahale.metrics.spring.boot.MetricsReportProperties;
+
 public class LibratoReporterProperties extends ReporterProperties {
 
+	public static final String PREFIX = MetricsReportProperties.PREFIX + ".librato";
 	// Required
 	private String email;
 	private String username;

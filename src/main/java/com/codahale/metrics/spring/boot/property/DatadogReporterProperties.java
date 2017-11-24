@@ -17,9 +17,13 @@ package com.codahale.metrics.spring.boot.property;
 
 import java.util.NoSuchElementException;
 
+import com.codahale.metrics.spring.boot.MetricsReportProperties;
+
 
 public class DatadogReporterProperties extends ReporterProperties {
 
+	public static final String PREFIX = MetricsReportProperties.PREFIX + ".datadog";
+	
 	public enum TransportEnum {
 
 		HTTP("http"), UDP("udp"), STATSD("statsd");

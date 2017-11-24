@@ -28,7 +28,7 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.health.HealthCheckRegistry;
 import com.codahale.metrics.spring.boot.EnableAnnotationMetrics;
 import com.codahale.metrics.spring.boot.MetricsProperties;
-import com.codahale.metrics.spring.boot.factory.MetricsBeanPostProcessorFactory;
+import com.codahale.metrics.spring.boot.ext.MetricsBeanPostProcessorFactory;
 import com.codahale.metrics.spring.boot.factory.config.AdvisingBeanPostProcessor;
 import com.codahale.metrics.spring.boot.factory.config.CachedGaugeAnnotationBeanPostProcessor;
 import com.codahale.metrics.spring.boot.factory.config.GaugeFieldAnnotationBeanPostProcessor;

@@ -13,8 +13,9 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.codahale.metrics.spring.boot.ext;
+package com.codahale.metrics.spring.boot.ext.reporter;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -28,6 +29,7 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 
 import com.codahale.metrics.Clock;
 import com.codahale.metrics.Counter;
@@ -86,10 +88,17 @@ public class DatabaseReporter extends ScheduledReporter {
 		private boolean closeOnCommit;
 
 		private String caugeTable = "cauge_metrics";
+		private String counterTable = "counter_metrics";
 		private String histogramTable = "histogram_metrics";
 		private String meterTable = "meter_metrics";
 		private String timerTable = "timer_metrics";
-
+		
+		private boolean allowCauge = false;
+		private boolean allowCounter = true;
+		private boolean allowHistogram = false;
+		private boolean allowMeter = false;
+		private boolean allowTimer = false;
+		
 		private Builder(MetricRegistry registry) {
 			this.registry = registry;
 			this.rateUnit = TimeUnit.SECONDS;
@@ -102,12 +111,7 @@ public class DatabaseReporter extends ScheduledReporter {
 			this.closeOnCommit = true;
 		}
 
-		public Builder setShutdownExecutorOnStop(boolean shutdownExecutorOnStop) {
-			this.shutdownExecutorOnStop = shutdownExecutorOnStop;
-			return this;
-		}
-
-		public Builder setCloseOnCommit(boolean closeOnCommit) {
+		public Builder closeOnCommit(boolean closeOnCommit) {
 			this.closeOnCommit = closeOnCommit;
 			return this;
 		}
@@ -189,14 +193,70 @@ public class DatabaseReporter extends ScheduledReporter {
 			return this;
 		}
 
+		public Builder rollbackOnException(boolean rollbackOnException) {
+			this.rollbackOnException = rollbackOnException;
+			return this;
+		}
+
+		public Builder caugeTable(String caugeTable) {
+			this.caugeTable = caugeTable;
+			return this;
+		}
+
+		public Builder counterTable(String counterTable) {
+			this.counterTable = counterTable;
+			return this;
+		}
+
+		public Builder histogramTable(String histogramTable) {
+			this.histogramTable = histogramTable;
+			return this;
+		}
+
+		public Builder meterTable(String meterTable) {
+			this.meterTable = meterTable;
+			return this;
+		}
+
+		public Builder timerTable(String timerTable) {
+			this.timerTable = timerTable;
+			return this;
+		}
+
+		public Builder allowCauge(boolean allowCauge) {
+			this.allowCauge = allowCauge;
+			return this;
+		}
+
+		public Builder allowCounter(boolean allowCounter) {
+			this.allowCounter = allowCounter;
+			return this;
+		}
+
+		public Builder allowHistogram(boolean allowHistogram) {
+			this.allowHistogram = allowHistogram;
+			return this;
+		}
+
+		public Builder allowMeter(boolean allowMeter) {
+			this.allowMeter = allowMeter;
+			return this;
+		}
+
+		public Builder allowTimer(boolean allowTimer) {
+			this.allowTimer = allowTimer;
+			return this;
+		}
+
 		/**
 		 * @param dataSource
 		 * @return a {@link DatabaseReporter}
 		 */
 		public DatabaseReporter build(DataSource dataSource) {
 			return new DatabaseReporter(registry, rateUnit, durationUnit, clock, filter, executor,
-					shutdownExecutorOnStop, dataSource, rollbackOnException, closeOnCommit, caugeTable, histogramTable,
-					meterTable, timerTable);
+					shutdownExecutorOnStop, dataSource, rollbackOnException, closeOnCommit, caugeTable, counterTable,
+					histogramTable, meterTable, timerTable, allowCauge, allowCounter, allowHistogram, allowMeter,
+					allowTimer);
 		}
 	}
 
@@ -214,23 +274,37 @@ public class DatabaseReporter extends ScheduledReporter {
 	private final boolean closeOnCommit;
 
 	private final String caugeTable;
+	private final String counterTable;
 	private final String histogramTable;
 	private final String meterTable;
 	private final String timerTable;
+	
+	private final boolean allowCauge;
+	private final boolean allowCounter;
+	private final boolean allowHistogram;
+	private final boolean allowMeter;
+	private final boolean allowTimer;
 
 	private DatabaseReporter(MetricRegistry registry, TimeUnit rateUnit,
 			TimeUnit durationUnit, Clock clock, MetricFilter filter, ScheduledExecutorService executor,
 			boolean shutdownExecutorOnStop, DataSource dataSource, boolean rollbackOnException, boolean closeOnCommit,
-			String caugeTable, String histogramTable, String meterTable, String timerTable) {
+			String caugeTable, String counterTable, String histogramTable, String meterTable, String timerTable,
+			boolean allowCauge,boolean allowCounter,boolean allowHistogram,boolean allowMeter,boolean allowTimer) {
 		super(registry, "database-reporter", filter, rateUnit, durationUnit, executor, shutdownExecutorOnStop);
 		this.clock = clock;
 		this.dataSource = dataSource;
 		this.rollbackOnException = rollbackOnException;
 		this.closeOnCommit = closeOnCommit;
 		this.caugeTable = caugeTable;
+		this.counterTable = counterTable;
 		this.histogramTable = histogramTable;
 		this.meterTable = meterTable;
 		this.timerTable = timerTable;
+		this.allowCauge = allowCauge;
+		this.allowCounter = allowCounter;
+		this.allowHistogram = allowHistogram;
+		this.allowMeter = allowMeter;
+		this.allowTimer = allowTimer;
 	}
 
 	@Override
@@ -239,8 +313,12 @@ public class DatabaseReporter extends ScheduledReporter {
 			SortedMap<String, Histogram> histograms,
 			SortedMap<String, Meter> meters, 
 			SortedMap<String, Timer> timers) {
-		final long timestamp = TimeUnit.MILLISECONDS.toSeconds(clock.getTime());
 
+		if( !allowCauge && !allowCounter && !allowHistogram && !allowMeter && !allowTimer) {
+			return;
+		}
+		
+		final long timestamp = TimeUnit.MILLISECONDS.toSeconds(clock.getTime());
 		Connection connection = null;
 		boolean oldAutocommit = true;
 		try {
@@ -248,7 +326,7 @@ public class DatabaseReporter extends ScheduledReporter {
 			connection = JdbcUtils.openConnection(dataSource);
 			oldAutocommit = connection.getAutoCommit();
 			connection.setAutoCommit(false);
-
+			
 			reportGauges(connection, timestamp, gauges);
 
 			reportCounters(connection, timestamp, counters);
@@ -312,6 +390,10 @@ public class DatabaseReporter extends ScheduledReporter {
 	private void reportGauges(Connection connection, long timestamp, SortedMap<String, Gauge> gauges)
 			throws SQLException {
 		
+		if( !allowCauge || CollectionUtils.isEmpty(gauges)) {
+			return;
+		}
+		
 		StringBuilder sqlBuilder = new StringBuilder("insert into ").append(caugeTable)
 				.append("(timestamp, name, value) values (?,?,?)");
 		// 对SQL进行处理，生成预编译Statement
@@ -322,9 +404,9 @@ public class DatabaseReporter extends ScheduledReporter {
 			final Gauge gauge = entry.getValue();
 
 			// 设置预定义参数
-			pstmt.setObject(0, timestamp);
-			pstmt.setObject(1, name);
-			pstmt.setObject(2, gauge.getValue());
+			pstmt.setObject(1, timestamp);
+			pstmt.setObject(2, name);
+			pstmt.setObject(3, gauge.getValue());
 
 			// 再添加一次预定义参数
 			pstmt.addBatch();
@@ -337,19 +419,39 @@ public class DatabaseReporter extends ScheduledReporter {
 	private void reportCounters(Connection connection, long timestamp, SortedMap<String, Counter> counters)
 			throws SQLException {
 		
-		StringBuilder sqlBuilder = new StringBuilder("insert into ").append(caugeTable)
-				.append("(timestamp, name, count) values (?,?,?)");
+		if(!allowCounter || CollectionUtils.isEmpty(counters)) {
+			return;
+		}
+		
+		StringBuilder sqlBuilder = new StringBuilder();
+		
+		sqlBuilder.append("declare ");
+		sqlBuilder.append("	 var_num number; ");
+		sqlBuilder.append("begin ");
+		sqlBuilder.append("	  select count('1') into var_num from ").append(counterTable).append(" where name = ?;");
+		sqlBuilder.append("	  if var_num > 0 then ");
+		sqlBuilder.append("	  	update ").append(counterTable).append(" set timestamp = ?, count = ? where name = ?; ");
+		sqlBuilder.append("	  else ");
+		sqlBuilder.append("		insert into ").append(counterTable).append("(timestamp, name, count) values (?,?,?);");
+		sqlBuilder.append("	  end if; ");
+		sqlBuilder.append("end; ");
+		
 		// 对SQL进行处理，生成预编译Statement
-		PreparedStatement pstmt = connection.prepareStatement(sqlBuilder.toString());
+		CallableStatement pstmt = connection.prepareCall(sqlBuilder.toString());
 		
 		for (Map.Entry<String, Counter> entry : counters.entrySet()) {
 			final String name = entry.getKey();
 			final Counter counter = entry.getValue();
 			
 			// 设置预定义参数
-			pstmt.setObject(0, timestamp);
 			pstmt.setObject(1, name);
-			pstmt.setObject(2, counter.getCount());
+			pstmt.setObject(2, timestamp);
+			pstmt.setObject(3, counter.getCount());
+			pstmt.setObject(4, name);
+			
+			pstmt.setObject(5, timestamp);
+			pstmt.setObject(6, name);
+			pstmt.setObject(7, counter.getCount());
 
 			// 再添加一次预定义参数
 			pstmt.addBatch();
@@ -364,6 +466,10 @@ public class DatabaseReporter extends ScheduledReporter {
 	private void reportHistograms(Connection connection, long timestamp, SortedMap<String, Histogram> histograms)
 			throws SQLException {
 		
+		if(!allowHistogram ||  CollectionUtils.isEmpty(histograms)) {
+			return;
+		}
+		
 		StringBuilder sqlBuilder = new StringBuilder("insert into ").append(histogramTable)
 				.append("(timestamp, name,")
 				.append(MetricAttribute.COUNT.getCode()).append(",")
@@ -376,7 +482,7 @@ public class DatabaseReporter extends ScheduledReporter {
 				.append(MetricAttribute.P95.getCode()).append(",")
 				.append(MetricAttribute.P98.getCode()).append(",")
 				.append(MetricAttribute.P99.getCode()).append(",")
-				.append(MetricAttribute.P999.getCode()).append(",")
+				.append(MetricAttribute.P999.getCode())
 				.append(") values (?,?,?,?,?,?,?,?,?,?,?,?,?)");
 		// 对SQL进行处理，生成预编译Statement
 		PreparedStatement pstmt = connection.prepareStatement(sqlBuilder.toString());
@@ -388,19 +494,19 @@ public class DatabaseReporter extends ScheduledReporter {
 			final Snapshot snapshot = histogram.getSnapshot();
 			
 			// 设置预定义参数
-			pstmt.setObject(0, timestamp);
-			pstmt.setObject(1, name);
-			pstmt.setObject(2, histogram.getCount());
-			pstmt.setObject(3, snapshot.getMax());
-			pstmt.setObject(4, snapshot.getMean());
-			pstmt.setObject(5, snapshot.getMin());
-			pstmt.setObject(6, snapshot.getStdDev());
-			pstmt.setObject(7, snapshot.getMedian());
-			pstmt.setObject(8, snapshot.get75thPercentile());
-			pstmt.setObject(9, snapshot.get95thPercentile());
-			pstmt.setObject(10, snapshot.get98thPercentile());
-			pstmt.setObject(11, snapshot.get99thPercentile());
-			pstmt.setObject(12, snapshot.get999thPercentile());
+			pstmt.setObject(1, timestamp);
+			pstmt.setObject(2, name);
+			pstmt.setObject(3, histogram.getCount());
+			pstmt.setObject(4, snapshot.getMax());
+			pstmt.setObject(5, snapshot.getMean());
+			pstmt.setObject(6, snapshot.getMin());
+			pstmt.setObject(7, snapshot.getStdDev());
+			pstmt.setObject(8, snapshot.getMedian());
+			pstmt.setObject(9, snapshot.get75thPercentile());
+			pstmt.setObject(10, snapshot.get95thPercentile());
+			pstmt.setObject(11, snapshot.get98thPercentile());
+			pstmt.setObject(12, snapshot.get99thPercentile());
+			pstmt.setObject(13, snapshot.get999thPercentile());
 
 			// 再添加一次预定义参数
 			pstmt.addBatch();
@@ -414,6 +520,10 @@ public class DatabaseReporter extends ScheduledReporter {
 
 	private void reportMeters(Connection connection, long timestamp, SortedMap<String, Meter> meters)
 			throws SQLException {
+		
+		if(!allowMeter || CollectionUtils.isEmpty(meters)) {
+			return;
+		}
 		
 		StringBuilder sqlBuilder = new StringBuilder("insert into ").append(meterTable)
 				.append("(timestamp, name,")
@@ -431,14 +541,14 @@ public class DatabaseReporter extends ScheduledReporter {
 			final Meter meter = entry.getValue();
 			
 			// 设置预定义参数
-			pstmt.setObject(0, timestamp);
-			pstmt.setObject(1, name);
-			pstmt.setObject(2, meter.getCount());
-			pstmt.setObject(3, convertRate(meter.getMeanRate()));
-			pstmt.setObject(4, convertRate(meter.getOneMinuteRate()));
-			pstmt.setObject(5, convertRate(meter.getFiveMinuteRate()));
-			pstmt.setObject(6, convertRate(meter.getFifteenMinuteRate()));
-			pstmt.setObject(7, getRateUnit());
+			pstmt.setObject(1, timestamp);
+			pstmt.setObject(2, name);
+			pstmt.setObject(3, meter.getCount());
+			pstmt.setObject(4, convertRate(meter.getMeanRate()));
+			pstmt.setObject(5, convertRate(meter.getOneMinuteRate()));
+			pstmt.setObject(6, convertRate(meter.getFiveMinuteRate()));
+			pstmt.setObject(7, convertRate(meter.getFifteenMinuteRate()));
+			pstmt.setObject(8, getRateUnit());
 
 			// 再添加一次预定义参数
 			pstmt.addBatch();
@@ -451,7 +561,9 @@ public class DatabaseReporter extends ScheduledReporter {
 	
 	private void reportTimers(Connection connection, long timestamp, SortedMap<String, Timer> timers) throws SQLException {
 		
-		
+		if(!allowTimer || CollectionUtils.isEmpty(timers)) {
+			return;
+		}
 		StringBuilder sqlBuilder = new StringBuilder("insert into ").append(timerTable)
 				.append("(timestamp, name,")
 				.append(MetricAttribute.COUNT.getCode()).append(",")
@@ -480,26 +592,26 @@ public class DatabaseReporter extends ScheduledReporter {
 			final Snapshot snapshot = timer.getSnapshot();
 			
 			// 设置预定义参数
-			pstmt.setObject(0, timestamp);
-			pstmt.setObject(1, name);
-			pstmt.setObject(2, timer.getCount());
-			pstmt.setObject(3, convertDuration(snapshot.getMax()));
-			pstmt.setObject(4, convertDuration(snapshot.getMean()));
-			pstmt.setObject(5, convertDuration(snapshot.getMin()));
-			pstmt.setObject(6, convertDuration(snapshot.getStdDev()));
-			pstmt.setObject(7, convertDuration(snapshot.getMedian()));
-			pstmt.setObject(8, convertDuration(snapshot.get75thPercentile()));
-			pstmt.setObject(9, convertDuration(snapshot.get95thPercentile()));
-			pstmt.setObject(10, convertDuration(snapshot.get98thPercentile()));
-			pstmt.setObject(11, convertDuration(snapshot.get99thPercentile()));
-			pstmt.setObject(12, convertDuration(snapshot.get999thPercentile()));
+			pstmt.setObject(1, timestamp);
+			pstmt.setObject(2, name);
+			pstmt.setObject(3, timer.getCount());
+			pstmt.setObject(4, convertDuration(snapshot.getMax()));
+			pstmt.setObject(5, convertDuration(snapshot.getMean()));
+			pstmt.setObject(6, convertDuration(snapshot.getMin()));
+			pstmt.setObject(7, convertDuration(snapshot.getStdDev()));
+			pstmt.setObject(8, convertDuration(snapshot.getMedian()));
+			pstmt.setObject(9, convertDuration(snapshot.get75thPercentile()));
+			pstmt.setObject(10, convertDuration(snapshot.get95thPercentile()));
+			pstmt.setObject(11, convertDuration(snapshot.get98thPercentile()));
+			pstmt.setObject(12, convertDuration(snapshot.get99thPercentile()));
+			pstmt.setObject(13, convertDuration(snapshot.get999thPercentile()));
 			
-			pstmt.setObject(13, convertRate(timer.getMeanRate()));
-			pstmt.setObject(14, convertRate(timer.getOneMinuteRate()));
-			pstmt.setObject(15, convertRate(timer.getFiveMinuteRate()));
-			pstmt.setObject(16, convertRate(timer.getFifteenMinuteRate()));
-			pstmt.setObject(17, getRateUnit());
-			pstmt.setObject(18, getDurationUnit());
+			pstmt.setObject(14, convertRate(timer.getMeanRate()));
+			pstmt.setObject(15, convertRate(timer.getOneMinuteRate()));
+			pstmt.setObject(16, convertRate(timer.getFiveMinuteRate()));
+			pstmt.setObject(17, convertRate(timer.getFifteenMinuteRate()));
+			pstmt.setObject(18, getRateUnit());
+			pstmt.setObject(19, getDurationUnit());
 
 			// 再添加一次预定义参数
 			pstmt.addBatch();

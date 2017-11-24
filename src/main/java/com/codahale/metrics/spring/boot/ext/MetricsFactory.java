@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.codahale.metrics.spring.boot.factory;
+package com.codahale.metrics.spring.boot.ext;
 
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -120,7 +120,7 @@ public class MetricsFactory {
 	}
 
 	private <T> T getMetric(Class<T> metricClass, Class<?> clazz, String... names) {
-		String prefix = (clazz == null ? "" : "." + clazz.getName());
+		String prefix = (clazz == null ? "" : clazz.getName());
 		String key = MetricRegistry.name(metricClass.getName() + prefix , names);
 		Metric ret = COMPLIED_METRICS.get(key);
 		if (ret != null) {

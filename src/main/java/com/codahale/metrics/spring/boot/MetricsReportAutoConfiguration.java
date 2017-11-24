@@ -15,62 +15,100 @@
  */
 package com.codahale.metrics.spring.boot;
 
-import java.util.ServiceConfigurationError;
-import java.util.ServiceLoader;
-
-import javax.annotation.PostConstruct;
+import javax.management.MBeanServer;
+import javax.sql.DataSource;
 
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.util.StringUtils;
 
+import com.codahale.metrics.Clock;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.ScheduledReporter;
+import com.codahale.metrics.spring.boot.factory.ConsoleReporterFactoryBean;
+import com.codahale.metrics.spring.boot.factory.DatabaseReporterFactoryBean;
+import com.codahale.metrics.spring.boot.factory.JmxReporterFactoryBean;
 import com.codahale.metrics.spring.boot.factory.Slf4jReporterFactoryBean;
-import com.codahale.metrics.spring.boot.factory.support.MetricsAnnotationDrivenRegistrar;
-import com.codahale.metrics.spring.boot.factory.support.ReporterBeanDefinitionParser;
+import com.codahale.metrics.spring.boot.property.ConsoleReporterProperties;
+import com.codahale.metrics.spring.boot.property.DatabaseReporterProperties;
+import com.codahale.metrics.spring.boot.property.JmxReporterProperties;
+import com.codahale.metrics.spring.boot.property.Slf4jReporterProperties;
+import com.codahale.metrics.spring.boot.utils.SystemClock;
 
 /**
  * 
- * @className	： MetricsReportAutoConfiguration
- * @description	： TODO(描述这个类的作用)
- * @author 		： <a href="https://github.com/vindell">vindell</a>
- * @date		： 2017年11月23日 下午9:28:27
- * @version 	V1.0
+ * @className ： MetricsReportAutoConfiguration
+ * @description ： TODO(描述这个类的作用)
+ * @author ： <a href="https://github.com/vindell">vindell</a>
+ * @date ： 2017年11月23日 下午9:28:27
+ * @version V1.0
  */
 @Configuration
-@ConditionalOnProperty(prefix = MetricsReportProperties.PREFIX, value = "enabled", havingValue = "true")
+@ConditionalOnClass({ MetricRegistry.class, ScheduledReporter.class })
 @EnableConfigurationProperties(MetricsReportProperties.class)
-@Import({ MetricsAnnotationDrivenRegistrar.class})
+@AutoConfigureAfter(MetricsAutoConfiguration.class)
 public class MetricsReportAutoConfiguration implements DisposableBean {
 
-	// private static final Logger LOG =
-	// LoggerFactory.getLogger(MetricsReportAutoConfiguration.class);
-	private final ServiceLoader<ReporterBeanDefinitionParser> reporterParserLoader = ServiceLoader
-			.load(ReporterBeanDefinitionParser.class);
-
 	@Bean
-	@ConditionalOnProperty(prefix = MetricsReportProperties.PREFIX, value = "slf4j")
-	public Slf4jReporterFactoryBean slf4jReporterFactoryBean(MetricsReportProperties properties) {
-		return new Slf4jReporterFactoryBean(properties.getSlf4j());
+	@ConditionalOnMissingBean
+	public Clock clock() {
+		return SystemClock.instance();
 	}
 	
-	@PostConstruct
-	protected void parseInternal(MetricsReportProperties properties) {
+	@Bean
+	@ConditionalOnProperty(prefix = ConsoleReporterProperties.PREFIX, value = "enabled", havingValue = "true")
+	public ConsoleReporterFactoryBean consoleReporterFactoryBean(MetricsReportProperties properties, Clock clock,
+			MetricRegistry metricRegistry) {
+		ConsoleReporterFactoryBean factoryBean = new ConsoleReporterFactoryBean(properties.getConsole());
+		factoryBean.setClock(clock);
+		factoryBean.setMetricRegistry(metricRegistry);
+		return factoryBean;
+	}
 
-		try {
-			String[] types = StringUtils.tokenizeToStringArray(properties.getTypes(), ",");
-			for (String type : types) {
-				for (ReporterBeanDefinitionParser reporterParser : reporterParserLoader) {
-					if (type.equals(reporterParser.getType())) {
-						// return reporterParser.parseReporter(properties);
-					}
-				}
-			}
-		} catch (ServiceConfigurationError ex) {
-		}
+	@Bean
+	@ConditionalOnProperty(prefix = Slf4jReporterProperties.PREFIX, value = "enabled", havingValue = "true")
+	public Slf4jReporterFactoryBean slf4jReporterFactoryBean(MetricsReportProperties properties, Clock clock,
+			MetricRegistry metricRegistry) {
+
+		Slf4jReporterFactoryBean factoryBean = new Slf4jReporterFactoryBean(properties.getSlf4j());
+		factoryBean.setClock(clock);
+		factoryBean.setMetricRegistry(metricRegistry);
+
+		return factoryBean;
+
+	}
+
+	@Bean
+	@ConditionalOnProperty(prefix = JmxReporterProperties.PREFIX, value = "enabled", havingValue = "true")
+	public JmxReporterFactoryBean jmxReporterFactoryBean(MetricsReportProperties properties, Clock clock,
+			MetricRegistry metricRegistry, @Autowired(required = false) MBeanServer mBeanServer) {
+
+		JmxReporterFactoryBean factoryBean = new JmxReporterFactoryBean(properties.getJmx());
+		factoryBean.setClock(clock);
+		factoryBean.setMetricRegistry(metricRegistry);
+		factoryBean.setmBeanServer(mBeanServer);
+
+		return factoryBean;
+	}
+
+	@Bean
+	@ConditionalOnProperty(prefix = DatabaseReporterProperties.PREFIX , value = "enabled", havingValue = "true")
+	@ConditionalOnBean(DataSource.class)
+	public DatabaseReporterFactoryBean databaseReporterFactoryBean(MetricsReportProperties properties,
+			DataSource dataSource, Clock clock, MetricRegistry metricRegistry) {
+
+		DatabaseReporterFactoryBean factoryBean = new DatabaseReporterFactoryBean(properties.getDatabase(), dataSource);
+		factoryBean.setClock(clock);
+		factoryBean.setMetricRegistry(metricRegistry);
+
+		return factoryBean;
 	}
 
 	@Override
