@@ -31,6 +31,7 @@ import org.springframework.util.StringUtils;
 
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.MetricSet;
+import com.codahale.metrics.health.HealthCheckRegistry;
 import com.codahale.metrics.spring.boot.ext.MetricsFactory;
 
 /**
@@ -76,6 +77,12 @@ public class MetricsAutoConfiguration implements DisposableBean {
 		}
 		
 		return metricRegistry;
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public HealthCheckRegistry healthCheckRegistry(MetricsProperties properties) {
+		return new HealthCheckRegistry();
 	}
 	
 	@Bean
