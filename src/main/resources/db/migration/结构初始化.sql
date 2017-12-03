@@ -1,7 +1,4 @@
--- Add comments to the columns 
-comment on column ZFTAL_MQ_TOPIC_INFO.TOPIC_STATUS
-  is '消息主题状态：-1:审核不通过、0:待提交、1:待审核、2：审核通过';
-
+﻿
 declare
 
   tb_name VARCHAR2(50);
