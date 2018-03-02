@@ -21,7 +21,7 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.SmartLifecycle;
 import org.springframework.util.StringUtils;
 
-import com.codahale.metrics.JmxReporter;
+import com.codahale.metrics.jmx.JmxReporter;
 import com.codahale.metrics.spring.boot.property.JmxReporterProperties;
 
 public class JmxReporterFactoryBean extends AbstractReporterFactoryBean<JmxReporter,JmxReporterProperties> implements SmartLifecycle, DisposableBean {

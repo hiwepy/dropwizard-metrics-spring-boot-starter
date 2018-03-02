@@ -30,10 +30,10 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<dropwizard-metrics.version>3.2.5</dropwizard-metrics.version>
 		<java.version>1.8</java.version>
 		<javax.servlet-api.version>3.1.0</javax.servlet-api.version>
 		<slf4j.version>1.7.25</slf4j.version>
+		<dropwizard-metrics.version>4.0.2</dropwizard-metrics.version>
 		<guava.version>23.4-jre</guava.version>
 	</properties>
 
@@ -53,87 +53,23 @@
 	<dependencyManagement>
 		<dependencies>
 			
-			<!-- ###################### Metrics 3.x ###################### -->
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>${guava.version}</version>
+			</dependency>
+			
+			<!-- ###################### Metrics 4.x ###################### -->
 
 			<!-- https://mvnrepository.com/artifact/io.dropwizard.metrics -->
 	
-			<!-- 基础依赖 -->
-	
-			<!-- A dependency-less package of just the annotations used by other Metrics 
-				modules. -->
-			<dependency>
-				<groupId>io.dropwizard.metrics</groupId>
-				<artifactId>metrics-annotation</artifactId>
-				 <version>${dropwizard-metrics.version}</version>
-			</dependency>
-			<!-- Metrics is a Java library which gives you unparalleled insight into 
-				what your code does in production. Metrics provides a powerful toolkit of 
-				ways to measure the behavior of critical components in your production environment. -->
-			<dependency>
-				<groupId>io.dropwizard.metrics</groupId>
-				<artifactId>metrics-core</artifactId>
-				 <version>${dropwizard-metrics.version}</version>
-			</dependency>
-			<!-- An addition to Metrics which provides the ability to run application-specific 
-				health checks, allowing you to check your application's heath in production. -->
-			<dependency>
-				<groupId>io.dropwizard.metrics</groupId>
-				<artifactId>metrics-healthchecks</artifactId>
-				 <version>${dropwizard-metrics.version}</version>
-			</dependency>
-			<!-- A set of Jackson modules which provide serializers for most Metrics 
-				classes. -->
-			<dependency>
-				<groupId>io.dropwizard.metrics</groupId>
-				<artifactId>metrics-json</artifactId>
-				<version>${dropwizard-metrics.version}</version>
-			</dependency>
-			
 			<!-- 监控扩展 -->
-
-			<!-- An Apache HttpClient wrapper providing Metrics instrumentation of 
-				connection pools, request durations and rates, and other useful information. -->
+			
+			<!-- https://mvnrepository.com/artifact/io.dropwizard.metrics/metrics-httpclient -->
 			<dependency>
-				<groupId>io.dropwizard.metrics</groupId>
-				<artifactId>metrics-httpclient</artifactId>
-				<version>${dropwizard-metrics.version}</version>
-			</dependency>
-			<!-- An Apache HttpAsyncClient wrapper providing Metrics instrumentation 
-				of connection pools, request durations and rates, and other useful information. -->
-			<dependency>
-				<groupId>io.dropwizard.metrics</groupId>
-				<artifactId>metrics-httpasyncclient</artifactId>
-				<version>${dropwizard-metrics.version}</version>
-			</dependency>
-			<!-- An instrumented filter for servlet environments. -->
-			<dependency>
-				<groupId>io.dropwizard.metrics</groupId>
-				<artifactId>metrics-servlet</artifactId>
-				<version>${dropwizard-metrics.version}</version>
-			</dependency>
-			<!-- An Ehcache wrapper providing Metrics instrumentation of caches. -->
-			<dependency>
-				<groupId>io.dropwizard.metrics</groupId>
-				<artifactId>metrics-ehcache</artifactId>
-				<version>${dropwizard-metrics.version}</version>
-			</dependency>
-			<!-- An instrumented appender for Logback. -->
-			<dependency>
-				<groupId>io.dropwizard.metrics</groupId>
-				<artifactId>metrics-logback</artifactId>
-				<version>${dropwizard-metrics.version}</version>
-			</dependency>
-			<!-- An instrumented appender for Log4j 1.x. -->
-			<dependency>
-				<groupId>io.dropwizard.metrics</groupId>
-				<artifactId>metrics-log4j</artifactId>
-				<version>${dropwizard-metrics.version}</version>
-			</dependency>
-			<!-- An instrumented appender for Log4j 2.x. -->
-			<dependency>
-				<groupId>io.dropwizard.metrics</groupId>
-				<artifactId>metrics-log4j2</artifactId>
-				<version>${dropwizard-metrics.version}</version>
+			    <groupId>io.dropwizard.metrics</groupId>
+			    <artifactId>metrics-httpclient</artifactId>
+			    <version>${dropwizard-metrics.version}</version>
 			</dependency>
 			<!-- Metrics Integration for JCache, JSR 107 standard for caching. Uses 
 				the CacheStatisticsMXBean provided statistics. -->
@@ -142,96 +78,29 @@
 				<artifactId>metrics-jcache</artifactId>
 				<version>${dropwizard-metrics.version}</version>
 			</dependency>
-			<!-- A JDBI wrapper providing Metrics instrumentation of query durations and rates. -->
+			<!-- Provides instrumentation of Jdbi3 data access objects  -->
 			<dependency>
-				<groupId>io.dropwizard.metrics</groupId>
-				<artifactId>metrics-jdbi</artifactId>
-				<version>${dropwizard-metrics.version}</version>
-			</dependency>
-			<!-- A set of extensions for Jetty 8 which provide instrumentation of thread 
-				pools, connector metrics, and application latency and utilization. -->
-			<dependency>
-				<groupId>io.dropwizard.metrics</groupId>
-				<artifactId>metrics-jetty8</artifactId>
-				<version>${dropwizard-metrics.version}</version>
-			</dependency>
-			<!-- A set of extensions for Jetty 9.1 and higher which provide instrumentation 
-				of thread pools, connector metrics, and application latency and utilization. -->
-			<dependency>
-				<groupId>io.dropwizard.metrics</groupId>
-				<artifactId>metrics-jetty9</artifactId>
-				<version>${dropwizard-metrics.version}</version>
-			</dependency>
-			<!-- A set of extensions for Jetty 9.0 which provide instrumentation of 
-				thread pools, connector metrics, and application latency and utilization. -->
-			<dependency>
-				<groupId>io.dropwizard.metrics</groupId>
-				<artifactId>metrics-jetty9-legacy</artifactId>
-				<version>${dropwizard-metrics.version}</version>
-			</dependency>
-			<!-- A set of class providing Metrics integration for Jersey, the reference 
-				JAX-RS implementation. This module is for the old Jersey 1.x -->
-			<dependency>
-				<groupId>io.dropwizard.metrics</groupId>
-				<artifactId>metrics-jersey</artifactId>
-				<version>${dropwizard-metrics.version}</version>
-			</dependency>
-			<!-- A set of class providing Metrics integration for Jersey, the reference 
-				JAX-RS implementation. -->
-			<dependency>
-				<groupId>io.dropwizard.metrics</groupId>
-				<artifactId>metrics-jersey2</artifactId>
-				<version>${dropwizard-metrics.version}</version>
-			</dependency>
-			<!-- A set of classes which allow you to monitor critical aspects of your 
-				Java Virtual Machine using Metrics. -->
-			<dependency>
-			    <groupId>io.dropwizard.metrics</groupId>
-			    <artifactId>metrics-jvm</artifactId>
-			    <version>4.0.0-alpha3</version>
-			</dependency>
-			
-			<!-- 输出扩展 -->
-			
-			<!-- HTTP报表
-				 Metric也提供了一个servlet (AdminServlet)提供JSON风格的报表。
-				   它还提供了单一功能的servlet (MetricsServlet, HealthCheckServlet, ThreadDumpServlet, PingServlet)。
- 			-->
-			<dependency>
-			    <groupId>io.dropwizard.metrics</groupId>
-			    <artifactId>metrics-servlets</artifactId>
-			    <version>${dropwizard-metrics.version}</version>
-			</dependency>
+                <groupId>io.dropwizard.metrics</groupId>
+                <artifactId>metrics-jdbi3</artifactId>
+                <version>${dropwizard-metrics.version}</version>
+            </dependency>
 			<!-- A set of classes which allow you to report metrics via JMX.  -->
 			<dependency>
 			    <groupId>io.dropwizard.metrics</groupId>
 			    <artifactId>metrics-jmx</artifactId>
-			    <version>4.0.0-alpha3</version>
-			</dependency>
-			<!-- A reporter for Metrics which announces measurements to a Graphite server.  -->
-			<dependency>
-			    <groupId>io.dropwizard.metrics</groupId>
-			    <artifactId>metrics-graphite</artifactId>
 			    <version>${dropwizard-metrics.version}</version>
 			</dependency>
-			<!-- A reporter for Metrics which announces measurements to a Ganglia cluster.  -->
+			<!-- A reporter for Metrics which announces measurements to a Ganglia cluster. -->
 			<dependency>
-			    <groupId>io.dropwizard.metrics</groupId>
-			    <artifactId>metrics-ganglia</artifactId>
-			    <version>${dropwizard-metrics.version}</version>
+				<groupId>io.dropwizard.metrics</groupId>
+				<artifactId>metrics-ganglia</artifactId>
+				<version>3.2.6</version>
 			</dependency>
-			
 			<!-- https://mvnrepository.com/artifact/org.coursera/metrics-datadog -->
 			<dependency>
 				<groupId>org.coursera</groupId>
 				<artifactId>metrics-datadog</artifactId>
 				<version>1.1.13</version>
-			</dependency>
-			<!-- https://mvnrepository.com/artifact/com.rabbitmq/amqp-client -->
-			<dependency>
-				<groupId>com.rabbitmq</groupId>
-				<artifactId>amqp-client</artifactId>
-				<version>5.0.0</version>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/com.librato.metrics/metrics-librato -->
 			<dependency>
@@ -255,12 +124,12 @@
 			<dependency>
 				<groupId>com.izettle</groupId>
 				<artifactId>metrics-influxdb</artifactId>
-				<version>1.2.1-rc1</version>
+				<version>1.2.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.influxdb</groupId>
 				<artifactId>influxdb-java</artifactId>
-				<version>2.5</version>
+				<version>2.9</version>
 			</dependency>
 			<!-- https://github.com/hengyunabc/metrics-kafka -->
 			<dependency>
@@ -272,12 +141,6 @@
 				<groupId>org.apache.kafka</groupId>
 				<artifactId>kafka-clients</artifactId>
 				<version>1.0.0</version>
-			</dependency>
-			<!-- https://github.com/hengyunabc/metrics-zabbix -->
-			<dependency>
-				<groupId>io.github.hengyunabc</groupId>
-				<artifactId>metrics-zabbix</artifactId>
-				<version>0.0.5</version>
 			</dependency>
 			<!-- https://github.com/hengyunabc/metrics-zabbix -->
 			<dependency>
@@ -349,7 +212,6 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>${guava.version}</version>
 		</dependency>
 		
 		<!-- ###################### Metrics 3.x ###################### -->
