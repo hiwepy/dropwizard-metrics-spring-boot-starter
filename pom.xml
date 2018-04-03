@@ -240,7 +240,7 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
-			<!--环境监察插件：代码编译前的环境监察 -->
+			<!--环境检查插件：代码编译前的环境检查 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
@@ -290,14 +290,14 @@
 					<jdk>[1.8,)</jdk>
 				</activation>
 			<properties>
-				<additionalparam>-Xdoclint:none -Xlint:unchecked</additionalparam>
+				<additionalparam>-Xdoclint:none</additionalparam>
 			</properties>
 		</profile>
 		<profile>
 			<id>release</id>
 			<build>
 				<plugins>
-					<!--环境监察插件：代码编译前的环境监察 -->
+					<!--环境检查插件：代码编译前的环境检查 -->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-enforcer-plugin</artifactId>
