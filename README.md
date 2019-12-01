@@ -1,5 +1,5 @@
-# spring-boot-start-dropwizard-metrics
-dropwizard-metrics starter for spring boot
+# dropwizard-metrics-spring-boot-starter
+Spring Boot Starter For Dropwizard Metrics
 
 ### 说明
 
@@ -15,7 +15,7 @@ dropwizard-metrics starter for spring boot
 ```
 <dependency>
 	<groupId>${project.groupId}</groupId>
-	<artifactId>spring-boot-starter-dropwizard-metrics</artifactId>
+	<artifactId>dropwizard-metrics-spring-boot-starter</artifactId>
 	<version>${project.version}</version>
 </dependency>
 ```
