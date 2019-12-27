@@ -10,7 +10,7 @@ import com.codahale.metrics.spring.boot.ext.MetricsFactory;
  * 
  * @className	： HttpServletContextAttributeMetricsListener
  * @description	： ServletContext上下文属性绑定、移除、更新速率监控
- * @author 		： <a href="https://github.com/vindell">vindell</a>
+ * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
  * @date		： 2017年11月22日 上午9:50:45
  * @version 	V1.0
  */

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, vindell (https://github.com/vindell).
+ * Copyright (c) 2018, hiwepy (https://github.com/hiwepy).
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -49,7 +49,7 @@ public class MetricsInstrumentedRegistrar {
 	/**
 	 * 
 	 * @description	： 通过该方式将metricRegistry注入到对应的属性值中以便各个组件使用
-	 * @author 		： <a href="https://github.com/vindell">vindell</a>
+	 * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
 	 * @date 		：2017年11月21日 下午8:18:50
 	 * @param registry
 	 * @return

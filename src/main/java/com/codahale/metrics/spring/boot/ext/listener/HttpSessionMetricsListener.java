@@ -10,7 +10,7 @@ import com.codahale.metrics.spring.boot.ext.MetricsFactory;
  * 
  * @className	： HttpSessionMetricsListener
  * @description	：  Session创建、销毁速率监控
- * @author 		： <a href="https://github.com/vindell">vindell</a>
+ * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
  * @date		： 2017年11月21日 下午2:31:26
  * @version 	V1.0
  */

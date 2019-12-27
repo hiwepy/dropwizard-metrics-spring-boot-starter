@@ -4,7 +4,7 @@ package com.codahale.metrics.spring.boot.event;
  * 
  * @className	： MetricCountedEvent
  * @description	： 业务运行状态事件对象
- * @author 		： <a href="https://github.com/vindell">vindell</a>
+ * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
  * @date		： 2017年6月9日 下午5:23:02
  * @version 	V1.0
  */
