@@ -16,11 +16,10 @@ Spring Boot Starter For Dropwizard Metrics
 <dependency>
 	<groupId>${project.groupId}</groupId>
 	<artifactId>dropwizard-metrics-spring-boot-starter</artifactId>
-	<version>${project.version}</version>
+	<version>1.0.0.RELEASE</version>
 </dependency>
 ```
 
 ### Sample
 
-[https://github.com/vindell/spring-boot-starter-samples/tree/master/spring-boot-sample-dropwizard-metrics](https://github.com/vindell/spring-boot-starter-samples/tree/master/spring-boot-sample-dropwizard-metrics "spring-boot-sample-dropwizard-metrics")
 
