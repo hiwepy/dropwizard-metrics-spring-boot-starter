@@ -53,20 +53,8 @@ abstract class AbstractAnnotationBeanPostProcessor implements BeanPostProcessor 
 		this.filter = filter;
 	}
 
-	/**
-	 * @param bean
-	 * @param beanName
-	 * @param targetClass
-	 * @param field
-	 */
 	protected void withField(Object bean, String beanName, Class<?> targetClass, Field field) {}
 
-	/**
-	 * @param bean
-	 * @param beanName
-	 * @param targetClass
-	 * @param method
-	 */
 	protected void withMethod(Object bean, String beanName, Class<?> targetClass, Method method) {}
 
 	@Override

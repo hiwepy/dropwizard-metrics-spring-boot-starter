@@ -29,7 +29,7 @@ import com.izettle.metrics.influxdb.InfluxDbTcpSender;
 import com.izettle.metrics.influxdb.InfluxDbUdpSender;
 
 
-/**
+/*
  * A factory for {@link InfluxDbReporter} instances.
  * <p/>
  * <b>Configuration Parameters:</b>

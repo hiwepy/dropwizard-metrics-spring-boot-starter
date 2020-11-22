@@ -46,13 +46,8 @@ import com.codahale.metrics.spring.boot.ext.listener.HttpSessionMetricsListener;
 @ConditionalOnClass({ EnableInstrumentedMetrics.class })
 public class MetricsInstrumentedRegistrar {
 
-	/**
-	 * 
-	 * @description	： 通过该方式将metricRegistry注入到对应的属性值中以便各个组件使用
-	 * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
-	 * @date 		：2017年11月21日 下午8:18:50
-	 * @param registry
-	 * @return
+	/*
+	 * 通过该方式将metricRegistry注入到对应的属性值中以便各个组件使用
 	 */
 	@Bean("filterAttributeExporter")
 	public ServletContextAttributeExporter filterAttributeExporter(MetricRegistry registry) {

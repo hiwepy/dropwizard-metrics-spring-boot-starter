@@ -61,35 +61,35 @@ public class MetricsFactory {
 		return registry;
 	}
 
-	/**
+	/*
 	 * 实例化一个Timer
 	 */
 	public Timer getTimer(String... names) {
 		return getMetric(Timer.class, null, names);
 	}
 	
-	/**
+	/*
 	 * 实例化一个Timer
 	 */
 	public Timer getTimer(Class<?> clazz, String... names) {
 		return getMetric(Timer.class, clazz, names);
 	}
 
-	/**
+	/*
 	 * 实例化一个Histograms
 	 */
 	public Histogram getHistogram(String... names) {
 		return getMetric(Histogram.class, null, names);
 	}
 	
-	/**
+	/*
 	 * 实例化一个Histograms
 	 */
 	public Histogram getHistogram(Class<?> clazz, String... names) {
 		return getMetric(Histogram.class, clazz, names);
 	}
 
-	/**
+	/*
 	 * 实例化一个counter,同样可以通过如下方式进行实例化再注册进去 Counter jobs = new Counter();
 	 * metrics.register(MetricRegistry.name(TestCounter.class, "jobs"), jobs);
 	 */
@@ -97,7 +97,7 @@ public class MetricsFactory {
 		return getMetric(Counter.class, null, names);
 	}
 
-	/**
+	/*
 	 * 实例化一个counter,同样可以通过如下方式进行实例化再注册进去 Counter jobs = new Counter();
 	 * metrics.register(MetricRegistry.name(TestCounter.class, "jobs"), jobs);
 	 */
@@ -105,14 +105,14 @@ public class MetricsFactory {
 		return getMetric(Counter.class, clazz, names);
 	}
 	
-	/**
+	/*
 	 * 实例化一个Meter
 	 */
 	public Meter getMeter(String... names) {
 		return getMetric(Meter.class, null, names);
 	}
 	
-	/**
+	/*
 	 * 实例化一个Meter
 	 */
 	public Meter getMeter(Class<?> clazz, String... names) {
@@ -145,7 +145,7 @@ public class MetricsFactory {
 		return (T) ret;
 	 }
 
-	/**
+	/*
 	 * 实例化一个Gauge<T>
 	 */
 	public <T> Gauge<T> getGauge(MetricSupplier<Gauge> supplier, Class<?> clazz, String... names) {
@@ -178,70 +178,70 @@ public class MetricsFactory {
 		 this.getRegistry().removeMatching(filter);
 	 }
 	
-	/**
+	/*
 	 * 实例化一个专用于全局上下文的MetricRegistry
 	 */
 	public static MetricRegistry getContextMetricRegistry() {
 		return DEFAULT_REGISTRY;
 	}
 
-	/**
+	/*
 	 * 实例化一个专用于全局上下文的HealthCheckRegistry
 	 */
 	public static HealthCheckRegistry getContextHealthCheckRegistry() {
 		return HEALTH_CHECK_REGISTRY;
 	}
 	
-	/**
+	/*
 	 * 实例化一个专用于仪表的registry
 	 */
 	public static MetricRegistry getGaugeMetricRegistry() {
 		return SharedMetricRegistries.getOrCreate("Gauges");
 	}
 
-	/**
+	/*
 	 * 实例化一个专用于计数器的registry
 	 */
 	public static MetricRegistry getCounterMetricRegistry() {
 		return SharedMetricRegistries.getOrCreate("Counters");
 	}
 
-	/**
+	/*
 	 * 实例化一个专用于直方图的registry
 	 */
 	public static MetricRegistry getHistogramMetricRegistry() {
 		return SharedMetricRegistries.getOrCreate("Histograms");
 	}
 
-	/**
+	/*
 	 * 实例化一个专用于速率的registry
 	 */
 	public static MetricRegistry getMeterMetricRegistry() {
 		return SharedMetricRegistries.getOrCreate("Meters");
 	}
 
-	/**
+	/*
 	 * 实例化一个专用于计时器的registry
 	 */
 	public static MetricRegistry getTimerMetricRegistry() {
 		return SharedMetricRegistries.getOrCreate("Timers");
 	}
 
-	/**
+	/*
 	 * 实例化一个registry，最核心的一个模块，相当于一个应用程序的metrics系统的容器，维护一个Map
 	 */
 	public static MetricRegistry getMetricRegistry(String metrics) {
 		return SharedMetricRegistries.getOrCreate(metrics);
 	}
 	
-	/**
+	/*
 	 * 实例化一个Histograms
 	 */
 	public static <T> Histogram histogram(Class<T> clazz, String... names) {
 		return getHistogramMetricRegistry().histogram(MetricRegistry.name(clazz, names));
 	}
 
-	/**
+	/*
 	 * 实例化一个Timer
 	 */
 	public static <T> Timer timer(Class<T> clazz, String... names) {
@@ -249,7 +249,7 @@ public class MetricsFactory {
 	}
 
 
-	/**
+	/*
 	 * 实例化一个counter,同样可以通过如下方式进行实例化再注册进去 Counter jobs = new Counter();
 	 * metrics.register(MetricRegistry.name(TestCounter.class, "jobs"), jobs);
 	 */
@@ -257,14 +257,14 @@ public class MetricsFactory {
 		return getCounterMetricRegistry().counter(MetricRegistry.name(clazz, names));
 	}
 
-	/**
+	/*
 	 * 实例化一个Meter
 	 */
 	public static <T> Meter meter(Class<?> clazz, String... names) {
 		return getMeterMetricRegistry().meter(MetricRegistry.name(clazz, names));
 	}
 	
-	/**
+	/*
 	 * 实例化一个Gauge<T>
 	 */
 	public static <T> Gauge<T> gauge(MetricSupplier<Gauge> supplier, Class<?> clazz, String... names) {

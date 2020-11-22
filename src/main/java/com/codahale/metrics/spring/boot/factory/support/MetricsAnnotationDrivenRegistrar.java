@@ -36,14 +36,6 @@ import com.codahale.metrics.spring.boot.factory.config.GaugeMethodAnnotationBean
 import com.codahale.metrics.spring.boot.factory.config.HealthCheckBeanPostProcessor;
 import com.codahale.metrics.spring.boot.factory.config.MetricAnnotationBeanPostProcessor;
 
-/**
- * 
- * @className	： MetricsAnnotationDrivenConfiguration
- * @description	： Registers BeanPostProcessors with Spring which proxy beans and capture metrics
- * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
- * @date		： 2017年11月21日 下午6:23:23
- * @version 	V1.0
- */
 @Configuration
 @ConditionalOnClass(EnableAnnotationMetrics.class)
 public class MetricsAnnotationDrivenRegistrar implements ImportBeanDefinitionRegistrar {
