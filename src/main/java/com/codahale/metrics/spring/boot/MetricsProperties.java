@@ -20,14 +20,6 @@ import java.util.Map;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-/**
- * 
- * @className ： MetricsProperties
- * @description ： TODO(描述这个类的作用)
- * @author ： <a href="https://github.com/hiwepy">hiwepy</a>
- * @date ： 2017年11月17日 下午2:24:47
- * @version V1.0
- */
 @ConfigurationProperties(prefix = MetricsProperties.PREFIX)
 public class MetricsProperties {
 
@@ -36,7 +28,7 @@ public class MetricsProperties {
 	private boolean exposeProxy = false;
 	private boolean proxyTargetClass = false;
 	
-	/**
+	/*
 	 *jvm.gc : com.codahale.metrics.jvm.GarbageCollectorMetricSet </br>
      *jvm.memory : com.codahale.metrics.jvm.MemoryUsageGaugeSet  </br>
      *jvm.thread-states : com.codahale.metrics.jvm.ThreadStatesGaugeSet </br>
@@ -67,17 +59,5 @@ public class MetricsProperties {
 	public void setMetrics(Map<String, String> metrics) {
 		this.metrics = metrics;
 	}
-
-	public String getMetricRegistry() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public String getHealthCheckRegistry() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
 
 }

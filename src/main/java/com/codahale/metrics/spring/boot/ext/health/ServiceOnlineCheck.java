@@ -5,14 +5,7 @@ import java.net.NetworkInterface;
 import java.util.Enumeration;
 
 import com.codahale.metrics.health.HealthCheck;
-/**
- * 
- * @className	： ServiceOnlineCheck
- * @description	： http://blog.csdn.net/paullmq/article/details/9032631
- * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
- * @date		： 2017年11月22日 上午10:02:40
- * @version 	V1.0
- */
+
 public class ServiceOnlineCheck extends HealthCheck {
 
 	@Override

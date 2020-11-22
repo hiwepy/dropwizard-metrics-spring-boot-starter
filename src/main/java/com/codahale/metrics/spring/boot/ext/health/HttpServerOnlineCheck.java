@@ -4,7 +4,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import com.codahale.metrics.health.HealthCheck;
-/**
+/*
  *	http://blog.csdn.net/paullmq/article/details/9032631
  */
 public class HttpServerOnlineCheck extends HealthCheck {

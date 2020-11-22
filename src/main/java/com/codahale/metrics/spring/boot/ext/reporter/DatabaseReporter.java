@@ -56,8 +56,7 @@ public class DatabaseReporter extends ScheduledReporter {
 	/**
 	 * Returns a new {@link Builder} for {@link DatabaseReporter}.
 	 *
-	 * @param registry
-	 *            the registry to report
+	 * @param registry the registry to report
 	 * @return a {@link Builder} instance for a {@link DatabaseReporter}
 	 */
 	public static Builder forRegistry(MetricRegistry registry) {
@@ -249,7 +248,7 @@ public class DatabaseReporter extends ScheduledReporter {
 		}
 
 		/**
-		 * @param dataSource
+		 * @param dataSource the DataSource
 		 * @return a {@link DatabaseReporter}
 		 */
 		public DatabaseReporter build(DataSource dataSource) {

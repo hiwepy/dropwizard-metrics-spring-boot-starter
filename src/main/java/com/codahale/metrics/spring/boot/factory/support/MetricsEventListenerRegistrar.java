@@ -25,14 +25,6 @@ import com.codahale.metrics.spring.boot.event.listener.GaugeEventListener;
 import com.codahale.metrics.spring.boot.event.listener.HistogramEventListener;
 import com.codahale.metrics.spring.boot.event.listener.MeterEventListener;
 
-/**
- * 
- * @className	： MetricsEventListenerRegistrar
- * @description	： TODO(描述这个类的作用)
- * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
- * @date		： 2017年11月22日 上午10:32:22
- * @version 	V1.0
- */
 @Configuration
 @ConditionalOnClass(EnableEventMetrics.class)
 public class MetricsEventListenerRegistrar{

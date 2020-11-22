@@ -7,12 +7,7 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.spring.boot.ext.MetricsFactory;
 
 /**
- * 
- * @className	： HttpSessionAttributeMetricsListener
- * @description	： Session属性绑定、移除、更新速率监控
- * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
- * @date		： 2017年6月11日 下午2:12:11
- * @version 	V1.0
+ * Session属性绑定、移除、更新速率监控
  */
 public class HttpSessionAttributeMetricsListener implements HttpSessionAttributeListener {
 
