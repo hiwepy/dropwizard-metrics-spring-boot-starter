@@ -34,14 +34,6 @@ import com.codahale.metrics.MetricSet;
 import com.codahale.metrics.health.HealthCheckRegistry;
 import com.codahale.metrics.spring.boot.ext.MetricsFactory;
 
-/**
- * 
- * @className	： MetricsAutoConfiguration
- * @description	： TODO(描述这个类的作用)
- * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
- * @date		： 2017年11月21日 下午3:07:08
- * @version 	V1.0
- */
 @Configuration
 @ConditionalOnClass(MetricRegistry.class)
 @EnableConfigurationProperties(MetricsProperties.class)

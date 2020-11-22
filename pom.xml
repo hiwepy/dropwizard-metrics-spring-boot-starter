@@ -364,8 +364,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<dropwizard-metrics.version>4.0.3</dropwizard-metrics.version>
-		<guava.version>27.0.1-jre</guava.version>
+		<dropwizard-metrics.version>4.1.15</dropwizard-metrics.version>
+		<guava.version>30.0-jre</guava.version>
 		<javax.servlet-api.version>3.1.0</javax.servlet-api.version>
 		<slf4j.version>1.7.25</slf4j.version>
 		<maven.version>3.0</maven.version>

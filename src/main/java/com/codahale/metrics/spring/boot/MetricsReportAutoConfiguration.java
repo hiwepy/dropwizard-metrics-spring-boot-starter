@@ -42,14 +42,6 @@ import com.codahale.metrics.spring.boot.property.JmxReporterProperties;
 import com.codahale.metrics.spring.boot.property.Slf4jReporterProperties;
 import com.codahale.metrics.spring.boot.utils.SystemClock;
 
-/**
- * 
- * @className ： MetricsReportAutoConfiguration
- * @description ： TODO(描述这个类的作用)
- * @author ： <a href="https://github.com/hiwepy">hiwepy</a>
- * @date ： 2017年11月23日 下午9:28:27
- * @version V1.0
- */
 @Configuration
 @ConditionalOnClass({ MetricRegistry.class, ScheduledReporter.class })
 @EnableConfigurationProperties(MetricsReportProperties.class)
