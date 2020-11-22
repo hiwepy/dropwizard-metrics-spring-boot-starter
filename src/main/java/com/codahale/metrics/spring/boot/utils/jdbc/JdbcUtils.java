@@ -47,7 +47,7 @@ public class JdbcUtils {
      *
      * @param dataSource The dataSource to obtain the connection from.
      * @return The new connection.
-     * @throws FlywayException when the connection could not be opened.
+     * @throws MetricsException when the connection could not be opened.
      */
     public static Connection openConnection(DataSource dataSource) throws MetricsException {
         try {

@@ -33,14 +33,6 @@ import com.codahale.metrics.spring.boot.property.RocketmqReporterProperties;
 import com.codahale.metrics.spring.boot.property.Slf4jReporterProperties;
 import com.codahale.metrics.spring.boot.property.ZabbixReporterProperties;
 
-/**
- * 
- * @className ： MetricsProperties
- * @description ： TODO(描述这个类的作用)
- * @author ： <a href="https://github.com/hiwepy">hiwepy</a>
- * @date ： 2017年11月17日 下午2:24:47
- * @version V1.0
- */
 @ConfigurationProperties(prefix = MetricsReportProperties.PREFIX)
 public class MetricsReportProperties {
 
@@ -48,8 +40,6 @@ public class MetricsReportProperties {
 
 	// Required
 	protected String types = "console";
-	
-	/* 各类报表输出配置 */
 	
 	@NestedConfigurationProperty
 	private ConsoleReporterProperties console;

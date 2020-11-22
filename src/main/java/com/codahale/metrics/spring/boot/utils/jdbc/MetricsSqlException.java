@@ -26,7 +26,7 @@ public class MetricsSqlException extends MetricsException {
     
 	/**
      * Creates new instance of FlywaySqlScriptException.
-     *
+     * @param message the message.
      * @param sqlException Cause of the problem.
      */
     public MetricsSqlException(String message, SQLException sqlException) {
