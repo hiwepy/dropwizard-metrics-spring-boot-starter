@@ -18,11 +18,11 @@ package com.codahale.metrics.spring.boot.factory.support;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletContextAttributeListener;
-import javax.servlet.ServletRequestAttributeListener;
-import javax.servlet.ServletRequestListener;
-import javax.servlet.http.HttpSessionAttributeListener;
-import javax.servlet.http.HttpSessionListener;
+import jakarta.servlet.ServletContextAttributeListener;
+import jakarta.servlet.ServletRequestAttributeListener;
+import jakarta.servlet.ServletRequestListener;
+import jakarta.servlet.http.HttpSessionAttributeListener;
+import jakarta.servlet.http.HttpSessionListener;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
