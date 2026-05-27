@@ -1,7 +1,7 @@
 package com.codahale.metrics.spring.boot.ext.listener;
 
-import javax.servlet.ServletRequestAttributeEvent;
-import javax.servlet.ServletRequestAttributeListener;
+import jakarta.servlet.ServletRequestAttributeEvent;
+import jakarta.servlet.ServletRequestAttributeListener;
 
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.spring.boot.ext.MetricsFactory;
