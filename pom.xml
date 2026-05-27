@@ -545,6 +545,7 @@
 		<dependency>
 			<groupId>io.dropwizard.metrics</groupId>
 			<artifactId>metrics-annotation</artifactId>
+            <version>4.2.30</version>
 		</dependency>
 		<!-- Metrics is a Java library which gives you unparalleled insight into
 			what your code does in production. Metrics provides a powerful toolkit of
@@ -552,6 +553,7 @@
 		<dependency>
 			<groupId>io.dropwizard.metrics</groupId>
 			<artifactId>metrics-core</artifactId>
+            <version>4.2.30</version>
 		</dependency>
 		<!-- An addition to Metrics which provides the ability to run application-specific
 			health checks, allowing you to check your application's heath in production. -->
